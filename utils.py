@@ -8,6 +8,7 @@ import streamlit as st
 
 
 
+
 llm = OllamaLLM(model=OLLAMA_MODEL, host=OLLAMA_HOST)
 _idx = init_pinecone()
 
