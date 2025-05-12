@@ -11,7 +11,6 @@ from utils import answer_query
 from agents.common.memory import auto_learn_facts  # Adjusted import path to match the correct location
 from agents.common.pdf_processing import process_pdf
 import importlib.util
-from agents.clinical_data_explorer_agent.clinical_agent_factory import clinical_agent
 
 # Add the root directory of your project to sys.path
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
@@ -100,7 +99,7 @@ def main():
                         "input": f"{csv_path} | {user_input}",
                         "intermediate_steps": []
                     }
-                    response = clinical_agent.invoke(input_data)
+                    #response = clinical_agent.invoke(input_data)
             else:
                 st.warning("Please upload a clinical CSV file.")
 
