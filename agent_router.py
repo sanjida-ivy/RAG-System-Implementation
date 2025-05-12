@@ -5,7 +5,7 @@ from langchain.agents.react.agent import create_react_agent
 from langchain.tools import Tool
 from langchain import PromptTemplate
 from utils import retrieve_docs, summarize_docs, answer_question
-from pdf_processing import process_pdf
+from agents.common.pdf_processing import process_pdf
 
 # Adapter for multi-step QA Calls
 def answer_question_single(input_str: str) -> str:

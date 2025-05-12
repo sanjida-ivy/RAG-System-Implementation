@@ -1,7 +1,7 @@
 import time
 from config import OLLAMA_HOST, OLLAMA_MODEL
 from langchain_ollama.llms import OllamaLLM
-from vector_utils import embed_texts
+from agents.common.vector_utils import embed_texts
 from pinecone_setup import init_pinecone
 from config import PINECONE_NAMESPACE
 import streamlit as st

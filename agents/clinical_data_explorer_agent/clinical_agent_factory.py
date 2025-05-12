@@ -4,16 +4,18 @@
 # Purpose: Explore EHR, lab data, clinical trials in CSV/Excel format
 # Tools to Add: Pandas tool, PythonREPL, plot generator
 # Use Case Example: “Plot CRP levels over time for diabetic patients.”
-
+import matplotlib.pyplot as plt
+import os
+import uuid
+import pandas as pd
 from langchain_ollama.llms import OllamaLLM
 from langchain.agents.react.agent import create_react_agent
 from langchain.tools import Tool
 from langchain import PromptTemplate
 from config import OLLAMA_MODEL, OLLAMA_HOST
-import clinical_tools_lib  # ✅ Now safe
-import matplotlib.pyplot as plt
-import os
-import uuid
+from . import clinical_tools
+
+
 
 # ✅ Fallback REPL setup (manual if import fails)
 class BasicPythonREPL:
@@ -41,10 +43,7 @@ def enhanced_plot_variable(input_str: str) -> str:
     Input format: 'file_path, column_name, [filter_column=condition]'
     Example: 'data.csv, CRP, Diagnosis=diabetes'
     """
-    import pandas as pd
-    import matplotlib.pyplot as plt
-    import os
-    import uuid
+
 
     try:
         parts = [s.strip() for s in input_str.split(",")]
@@ -73,7 +72,7 @@ def enhanced_plot_variable(input_str: str) -> str:
 
 # Add your clinical tools
 tools = [
-    Tool.from_function(clinical_tools_lib.load_csv_data, name="LoadCSV", description="Load and preview clinical CSV data. Input: file path"),
+    Tool.from_function(clinical_tools.load_csv_data, name="LoadCSV", description="Load and preview clinical CSV data. Input: file path"),
     Tool.from_function(
     enhanced_plot_variable,
     name="PlotVariable",
@@ -83,25 +82,13 @@ tools = [
 ]
 
 prompt = PromptTemplate(
-    # ✅ Fixed missing 'tools' variable
     template="""
-You are a clinical data assistant. You must reason step-by-step and use the tools to explore and visualize clinical study CSV data.
-
-ONLY use this format:
-
-Question: {input}
-Thought: [your internal reasoning here]
-Action: [tool name from this list: {tool_names}]
-Action Input: [the input for the tool]
-Observation: [result of the tool]
-... (you can repeat Thought/Action/Action Input/Observation if needed)
-Final Answer: [your final response to the user]
-
-DO NOT add any other text. Strictly follow the above format.
-
+You are a clinical data assistant...
+...
 {agent_scratchpad}
 """,
     input_variables=["input", "tools", "tool_names", "agent_scratchpad"],
 )
 
 clinical_agent = create_react_agent(llm=llm, tools=tools, prompt=prompt)
+

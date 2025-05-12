@@ -1,12 +1,5 @@
 # ---------------- clinical_tools.py ----------------
 import os
-import uuid
-import streamlit as st
-from PyPDF2 import PdfReader
-
-from pdf_processing import process_pdf
-from utils import answer_query
-from memory import auto_learn_facts
 # Removed the circular import: from clinical_agent import clinical_agent
 
 os.makedirs("uploads", exist_ok=True)

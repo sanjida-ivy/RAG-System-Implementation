@@ -5,7 +5,7 @@ from typing import List
 from PyPDF2 import PdfReader
 from langchain.text_splitter import CharacterTextSplitter
 
-from vector_utils import upsert_vectors
+from .vector_utils import upsert_vectors
 from pinecone_setup import init_pinecone
 
 def process_pdf(path: str,

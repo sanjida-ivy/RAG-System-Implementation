@@ -1,6 +1,6 @@
 # ---------------------- app.py ----------------------
 import streamlit as st
-
+import sys
 # Must be first Streamlit command
 st.set_page_config(page_title="🧠 Multi-Agent Assistant", layout="centered")
 
@@ -8,9 +8,13 @@ import os
 import uuid
 from PyPDF2 import PdfReader
 from utils import answer_query
-from memory import auto_learn_facts
-from pdf_processing import process_pdf
+from agents.common.memory import auto_learn_facts  # Adjusted import path to match the correct location
+from agents.common.pdf_processing import process_pdf
 import importlib.util
+from agents.clinical_data_explorer_agent.clinical_agent_factory import clinical_agent
+
+# Add the root directory of your project to sys.path
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 def load_module(name, path):
     spec = importlib.util.spec_from_file_location(name, path)
@@ -91,7 +95,7 @@ def main():
                 st.session_state["csv_path"] = csv_path
 
                 with st.spinner("Thinking..."):
-                    from clinical_agent_factory import clinical_agent
+                    
                     input_data = {
                         "input": f"{csv_path} | {user_input}",
                         "intermediate_steps": []
